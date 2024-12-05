@@ -5,3 +5,6 @@ class Configuraciones():
         self.screen_height = 600
         self.bg_color = (230,230,230)
         self.name_game = "Juego invasión de aliens - Miguel Calderon"
+
+        #configuraciones de la nave
+        self.factor_velocidad_nave = 1
