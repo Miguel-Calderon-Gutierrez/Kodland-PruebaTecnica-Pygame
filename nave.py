@@ -11,5 +11,11 @@ class Nave():
         self.rect = self.imagen.get_rect()
         self.pantalla_rect = pantalla.get_rect()
 
+        #Centra la imagen de la nave en la parte inferior central de la pantalla
         self.rect.centerx = self.pantalla_rect.centerx
+        self.rect.bottom = self.pantalla_rect.bottom
 
+
+    def blitme(self):
+        """Dibuja la imagen en su ubicación actual"""
+        self.pantalla.blit(self.imagen,self.rect)
