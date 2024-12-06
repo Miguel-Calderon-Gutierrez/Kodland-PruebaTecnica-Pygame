@@ -2,7 +2,7 @@ import sys
 import pygame
 from bala import Bala
 from alien import Alien
-from nave import Nave
+from time import sleep
 
 
 def verificar_eventos_keydown(event, service_configuraciones, pantalla, nave, balas):
@@ -127,10 +127,33 @@ def check_fleet_edges(service_configuraciones, aliens):
             break
 
 
-def update_aliens(service_configuraciones,nave,aliens):
+def update_aliens(service_configuraciones, estadisticas, pantalla, nave, aliens, balas):
     # actualiza las posiciones de los aliens
     check_fleet_edges(service_configuraciones, aliens)
     aliens.update()
 
     if pygame.sprite.spritecollideany(nave, aliens):
-        pass
+        nave_golpeada(service_configuraciones, estadisticas, pantalla, nave, aliens, balas)
+
+
+def nave_golpeada(service_configuraciones, estadisticas, pantalla, nave, aliens, balas):
+    """Responde a una nave siendo golpeada por un alien"""
+
+    if estadisticas.naves_restantes > 0:
+        # Disminuye naves_restantes
+        estadisticas.naves_restantes -= 1
+
+        # Vacía la lista de aliens y balas
+        aliens.empty()
+        balas.empty()
+
+        # Crea una nueva flota y centra la nave
+        crear_flota(service_configuraciones, pantalla, nave, aliens)
+        nave.centrar_nave()
+
+        # Pausa
+        sleep(0.5)
+
+    else:
+        estadisticas.game_active = False
+        pygame.mouse.set_visible(True)

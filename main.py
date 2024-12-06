@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Group
 from configuraciones import Configuraciones
+from estadisticas import Estadisticas
 from nave import Nave
 import funciones_juego as fj
 
@@ -12,6 +13,9 @@ def run_game():
 
     pantalla = pygame.display.set_mode((service_configuraciones.screen_width, service_configuraciones.screen_height))
     pygame.display.set_caption(service_configuraciones.name_game)
+
+    # Estadisticas del juego
+    estadisticas = Estadisticas(service_configuraciones)
 
     # se crea la nave, el grupo de balas y los aliens
     nave = Nave(service_configuraciones=service_configuraciones, pantalla=pantalla)
@@ -27,7 +31,7 @@ def run_game():
         fj.verificar_eventos(service_configuraciones, pantalla, nave, balas)
         nave.update()
         fj.updata_balas(service_configuraciones, pantalla, nave, aliens, balas)
-        fj.update_aliens(service_configuraciones,nave ,aliens)
+        fj.update_aliens(service_configuraciones, estadisticas,pantalla, nave, aliens, balas)
         fj.actualizar_pantalla(service_configuraciones, pantalla, nave, aliens, balas)
 
 
