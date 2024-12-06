@@ -1,8 +1,8 @@
 class Estadisticas():
 	"""Seguimiento de las estadísticas de Invasión Alienígena"""
-	def __init__(self, ai_configuraciones):
+	def __init__(self, service_configuraciones):
 		"""Inicializa las estadísticas"""
-		self.ai_configuraciones = ai_configuraciones
+		self.service_configuraciones = service_configuraciones
 		self.reset_stats()
 
 		# Inicia Invasión Alienígena en un estado activo
@@ -14,7 +14,7 @@ class Estadisticas():
 
 	def reset_stats(self):
 		"""Inicializa estadísticas que pueden cambiar durante el juego"""
-		self.naves_restantes = self.ai_configuraciones.cantidad_naves
+		self.naves_restantes = self.service_configuraciones.cantidad_naves
 		self.puntaje = 0
 		self.nivel = 1
 		

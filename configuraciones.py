@@ -1,8 +1,8 @@
 class Configuraciones():
 
     def __init__(self):
-        self.screen_width = 800
-        self.screen_height = 600
+        self.screen_width = 1000
+        self.screen_height = 750
         self.bg_color = (9, 0, 38)
         self.name_game = "Juego invasión de aliens - Miguel Calderon"
 
@@ -10,7 +10,7 @@ class Configuraciones():
         self.factor_velocidad_nave = 1
 
         # configuraciones de balas
-        self.bala_factor_velocidad = 1
+        self.bala_factor_velocidad = 3
         self.bala_width = 3
         self.bala_height = 15
         self.bala_color = 252, 163, 45

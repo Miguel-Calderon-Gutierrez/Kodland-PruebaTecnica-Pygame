@@ -26,8 +26,8 @@ def run_game():
         # captura y verificacion de eventos
         fj.verificar_eventos(service_configuraciones, pantalla, nave, balas)
         nave.update()
-        fj.updata_balas(aliens, balas)
-        fj.update_aliens(service_configuraciones, aliens)
+        fj.updata_balas(service_configuraciones, pantalla, nave, aliens, balas)
+        fj.update_aliens(service_configuraciones,nave ,aliens)
         fj.actualizar_pantalla(service_configuraciones, pantalla, nave, aliens, balas)
 
 

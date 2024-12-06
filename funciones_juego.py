@@ -49,7 +49,7 @@ def actualizar_pantalla(service_configuraciones, pantalla, nave, aliens, balas):
     pygame.display.flip()
 
 
-def updata_balas(aliens, balas):
+def updata_balas(service_configuraciones, pantalla, nave, aliens, balas):
     # actualiza las balas y elimina las antiguas
     balas.update()
     # Eliminar balas que salen de rango
@@ -57,7 +57,17 @@ def updata_balas(aliens, balas):
         if bala.rect.bottom <= 0:
             balas.remove(bala)
 
+    check_bala_alien_collisions(service_configuraciones, pantalla, nave, aliens, balas)
+
+
+def check_bala_alien_collisions(service_configuraciones, pantalla, nave, aliens, balas):
+    """Elimina las balas y los aliensque choquen"""
     collisions = pygame.sprite.groupcollide(balas, aliens, True, True)
+
+    if len(aliens) == 0:
+        # Si se destruye toda la flota, comienza un nuevo nivel
+        balas.empty()
+        crear_flota(service_configuraciones, pantalla, nave, aliens)
 
 
 def fuego_bala(service_configuraciones, pantalla, nave, balas):
@@ -117,7 +127,10 @@ def check_fleet_edges(service_configuraciones, aliens):
             break
 
 
-def update_aliens(service_configuraciones, aliens):
+def update_aliens(service_configuraciones,nave,aliens):
     # actualiza las posiciones de los aliens
     check_fleet_edges(service_configuraciones, aliens)
     aliens.update()
+
+    if pygame.sprite.spritecollideany(nave, aliens):
+        pass
