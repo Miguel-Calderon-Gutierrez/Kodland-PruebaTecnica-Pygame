@@ -1,16 +1,17 @@
 import pygame
+from pygame.sprite import Sprite
 
 
-class Nave():
+class Nave(Sprite):
 
     def __init__(self, service_configuraciones, pantalla):
-
+        super(Nave, self).__init__()
         self.pantalla = pantalla
         self.service_configuraciones = service_configuraciones
 
         # Carga la imagen de la nave y obtiene su rectangulo
-        self.imagen = pygame.image.load("imagenes/nave.bmp")
-        self.rect = self.imagen.get_rect()
+        self.image = pygame.image.load("imagenes/nave.bmp")
+        self.rect = self.image.get_rect()
         self.pantalla_rect = pantalla.get_rect()
 
         # Centra la imagen de la nave en la parte inferior central de la pantalla
@@ -34,7 +35,7 @@ class Nave():
 
     def blitme(self):
         """Dibuja la imagen en su ubicación actual"""
-        self.pantalla.blit(self.imagen, self.rect)
+        self.pantalla.blit(self.image, self.rect)
 
     def centrar_nave(self):
         """Centra la nave en la pantalla"""

@@ -28,7 +28,8 @@ class Marcador():
         """Convierte el marcador en una imagen renderizada"""
         puntaje_redondeado = int(round(self.estadisticas.puntaje, -1))
         puntaje_str = "{:,}".format(puntaje_redondeado)
-        self.puntaje_imagen = self.font.render(puntaje_str, True, self.text_color,self.service_configuraciones.bg_color)
+        self.puntaje_imagen = self.font.render(puntaje_str, True, self.text_color,
+                                               self.service_configuraciones.bg_color)
 
         # Muestra el puntaje en la esquina superior derecha de la pantalla
         self.puntaje_rect = self.puntaje_imagen.get_rect()
@@ -39,7 +40,8 @@ class Marcador():
         """Convierte la puntuación más alta en una imagen renderizada"""
         puntaje_alto = int(round(self.estadisticas.alto_puntaje, -1))
         alto_puntaje_str = "{:,}".format(puntaje_alto)
-        self.alto_puntaje_imagen = self.font.render("Record: "+alto_puntaje_str, True, self.text_color,self.service_configuraciones.bg_color)
+        self.alto_puntaje_imagen = self.font.render("Record: " + alto_puntaje_str, True, self.text_color,
+                                                    self.service_configuraciones.bg_color)
 
         # Centra el puntaje más alto en la parte superior de la pantalla
         self.alto_puntaje_rect = self.alto_puntaje_imagen.get_rect()
@@ -48,7 +50,7 @@ class Marcador():
 
     def prep_nivel(self):
         """Convierte el nivel en una imagen renderizada"""
-        self.nivel_imagen = self.font.render(str(self.estadisticas.nivel), True, self.text_color,
+        self.nivel_imagen = self.font.render("L:" + str(self.estadisticas.nivel), True, self.text_color,
                                              self.service_configuraciones.bg_color)
 
         # Posiciona el nivel debajo del puntaje
@@ -63,11 +65,12 @@ class Marcador():
             nave = Nave(self.service_configuraciones, self.pantalla)
             nave.rect.x = 10 + numero_nave * nave.rect.width
             nave.rect.y = 10
-           # self.naves.add(nave)
+            self.naves.add(nave)
 
     def muestra_puntaje(self):
         """Dibuja las puntuaciones y las naves en la pantalla"""
         self.pantalla.blit(self.puntaje_imagen, self.puntaje_rect)
         self.pantalla.blit(self.alto_puntaje_imagen, self.alto_puntaje_rect)
         self.pantalla.blit(self.nivel_imagen, self.nivel_rect)
-
+        # Dibuja las naves
+        self.naves.draw(self.pantalla)
