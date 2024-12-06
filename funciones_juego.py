@@ -127,6 +127,17 @@ def check_fleet_edges(service_configuraciones, aliens):
             break
 
 
+def check_aliens_bottom(service_configuraciones, estadisticas, pantalla, marcador, nave, aliens, balas):
+    """Comprueba si algún alien ha llegado al final de la pantalla"""
+    pantalla_rect = pantalla.get_rect()
+
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= pantalla_rect.bottom:
+            # Trata esto de la misma forma que si la nave fuera golpeada
+            nave_golpeada(service_configuraciones, estadisticas, pantalla, marcador, nave, aliens, balas)
+            break
+
+
 def update_aliens(service_configuraciones, estadisticas, pantalla, nave, aliens, balas):
     # actualiza las posiciones de los aliens
     check_fleet_edges(service_configuraciones, aliens)

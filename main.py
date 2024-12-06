@@ -29,10 +29,11 @@ def run_game():
     while True:
         # captura y verificacion de eventos
         fj.verificar_eventos(service_configuraciones, pantalla, nave, balas)
-        nave.update()
-        fj.updata_balas(service_configuraciones, pantalla, nave, aliens, balas)
-        fj.update_aliens(service_configuraciones, estadisticas,pantalla, nave, aliens, balas)
-        fj.actualizar_pantalla(service_configuraciones, pantalla, nave, aliens, balas)
+        if estadisticas.game_active:
+            nave.update()
+            fj.updata_balas(service_configuraciones, pantalla, nave, aliens, balas)
+            fj.update_aliens(service_configuraciones, estadisticas,pantalla, nave, aliens, balas)
+            fj.actualizar_pantalla(service_configuraciones, pantalla, nave, aliens, balas)
 
 
 run_game()

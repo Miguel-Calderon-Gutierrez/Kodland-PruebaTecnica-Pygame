@@ -6,7 +6,7 @@ class Estadisticas():
 		self.reset_stats()
 
 		# Inicia Invasión Alienígena en un estado activo
-		self.game_active = False
+		self.game_active = True
 
 		# La puntuación alta nunca debe restablecerse
 		self.alto_puntaje = 0
