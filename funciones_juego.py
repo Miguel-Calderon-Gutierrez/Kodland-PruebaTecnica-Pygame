@@ -13,7 +13,6 @@ def verificar_eventos_keyup(event, nave):
     elif event.key == pygame.K_LEFT:
         nave.moving_left = False
 
-
 def verificar_eventos(nave):
     # Escuchar eventos de teclado o del mouse
     for event in pygame.event.get():
