@@ -5,8 +5,8 @@ class Estadisticas():
 		self.service_configuraciones = service_configuraciones
 		self.reset_stats()
 
-		# Inicia Invasión Alienígena en un estado activo
-		self.game_active = True
+		# Inicia Invasión Alienígena en un estado inactivo
+		self.game_active = False
 
 		# La puntuación alta nunca debe restablecerse
 		self.alto_puntaje = 0

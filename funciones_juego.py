@@ -24,7 +24,7 @@ def verificar_eventos_keyup(event, nave):
         nave.moving_left = False
 
 
-def verificar_eventos(service_configuraciones, pantalla, nave, balas):
+def verificar_eventos(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens,balas):
     # Escuchar eventos de teclado o del mouse
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -33,9 +33,41 @@ def verificar_eventos(service_configuraciones, pantalla, nave, balas):
             verificar_eventos_keydown(event, service_configuraciones, pantalla, nave, balas)
         elif event.type == pygame.KEYUP:
             verificar_eventos_keyup(event, nave)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens, balas, mouse_x, mouse_y)
 
 
-def actualizar_pantalla(service_configuraciones, pantalla, nave, aliens, balas):
+def check_play_button(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens, balas, mouse_x, mouse_y):
+    """Comienza un nuevo juego cuando el jugador hace clic en Play"""
+    button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and not estadisticas.game_active:
+        # Restablece la configuración del juego
+        #service_configuraciones.inicializa_configuraciones_dinamicas()
+
+        # Ocultar el cursor del ratón
+        #pygame.mouse.set_visible(False)
+
+        # Restablece las estadísticas del juego
+        estadisticas.reset_stats()
+        estadisticas.game_active = True
+
+        # Restablece las imágenes de marcador
+        #marcador.prep_puntaje()
+        #marcador.prep_alto_puntaje()
+        #marcador.prep_nivel()
+        #marcador.prep_naves()
+
+        # Vacía la lista de aliens y balas
+        aliens.empty()
+        balas.empty()
+
+        # Crea una nueva flota y centra la nave
+        crear_flota(service_configuraciones, pantalla, nave, aliens)
+        nave.centrar_nave()
+
+
+def actualizar_pantalla(service_configuraciones, pantalla, estadisticas, nave, aliens, balas, play_button):
     # Actualiza la pantalla cada pasada por el bucle
     pantalla.fill(service_configuraciones.bg_color)
     # vuelve a dibujar todas la balas
@@ -45,6 +77,10 @@ def actualizar_pantalla(service_configuraciones, pantalla, nave, aliens, balas):
     nave.blitme()
     # Se dibuja el alien
     aliens.draw(pantalla)
+
+    if not estadisticas.game_active:
+        play_button.draw_button()
+
     # Hacer visible la pantalla
     pygame.display.flip()
 
