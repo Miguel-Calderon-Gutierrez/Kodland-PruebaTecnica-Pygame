@@ -5,7 +5,7 @@ from configuraciones import Configuraciones
 from estadisticas import Estadisticas
 from nave import Nave
 from button import Button
-
+from marcador import Marcador
 
 def run_game():
     # Inicializar el juego y crear el objeto pantalla
@@ -20,7 +20,7 @@ def run_game():
 
     # Estadisticas del juego
     estadisticas = Estadisticas(service_configuraciones)
-
+    marcador = Marcador(service_configuraciones, pantalla, estadisticas)
     # se crea la nave, el grupo de balas y los aliens
     nave = Nave(service_configuraciones=service_configuraciones, pantalla=pantalla)
     balas = Group()
@@ -35,10 +35,10 @@ def run_game():
         fj.verificar_eventos(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens, balas)
         if estadisticas.game_active:
             nave.update()
-            fj.updata_balas(service_configuraciones, pantalla, nave, aliens, balas)
+            fj.updata_balas(service_configuraciones, pantalla, estadisticas, marcador, nave, aliens, balas)
             fj.update_aliens(service_configuraciones, estadisticas, pantalla, nave, aliens, balas)
 
-        fj.actualizar_pantalla(service_configuraciones, pantalla, estadisticas, nave, aliens, balas, play_button)
+        fj.actualizar_pantalla(service_configuraciones, pantalla, estadisticas, marcador,nave, aliens, balas, play_button)
 
 
 run_game()

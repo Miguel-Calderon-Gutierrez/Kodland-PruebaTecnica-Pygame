@@ -24,7 +24,7 @@ def verificar_eventos_keyup(event, nave):
         nave.moving_left = False
 
 
-def verificar_eventos(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens,balas):
+def verificar_eventos(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens, balas):
     # Escuchar eventos de teclado o del mouse
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -35,28 +35,30 @@ def verificar_eventos(service_configuraciones, pantalla, estadisticas, play_butt
             verificar_eventos_keyup(event, nave)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens, balas, mouse_x, mouse_y)
+            check_play_button(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens, balas,
+                              mouse_x, mouse_y)
 
 
-def check_play_button(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens, balas, mouse_x, mouse_y):
+def check_play_button(service_configuraciones, pantalla, estadisticas, play_button, nave, aliens, balas, mouse_x,
+                      mouse_y):
     """Comienza un nuevo juego cuando el jugador hace clic en Play"""
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not estadisticas.game_active:
         # Restablece la configuración del juego
-        #service_configuraciones.inicializa_configuraciones_dinamicas()
+        service_configuraciones.inicializa_configuraciones_dinamicas()
 
         # Ocultar el cursor del ratón
-        #pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(False)
 
         # Restablece las estadísticas del juego
         estadisticas.reset_stats()
         estadisticas.game_active = True
 
         # Restablece las imágenes de marcador
-        #marcador.prep_puntaje()
-        #marcador.prep_alto_puntaje()
-        #marcador.prep_nivel()
-        #marcador.prep_naves()
+        # marcador.prep_puntaje()
+        # marcador.prep_alto_puntaje()
+        # marcador.prep_nivel()
+        # marcador.prep_naves()
 
         # Vacía la lista de aliens y balas
         aliens.empty()
@@ -67,7 +69,7 @@ def check_play_button(service_configuraciones, pantalla, estadisticas, play_butt
         nave.centrar_nave()
 
 
-def actualizar_pantalla(service_configuraciones, pantalla, estadisticas, nave, aliens, balas, play_button):
+def actualizar_pantalla(service_configuraciones, pantalla, estadisticas, marcador, nave, aliens, balas, play_button):
     # Actualiza la pantalla cada pasada por el bucle
     pantalla.fill(service_configuraciones.bg_color)
     # vuelve a dibujar todas la balas
@@ -78,6 +80,9 @@ def actualizar_pantalla(service_configuraciones, pantalla, estadisticas, nave, a
     # Se dibuja el alien
     aliens.draw(pantalla)
 
+    # se dibuja el marcador
+    marcador.muestra_puntaje()
+
     if not estadisticas.game_active:
         play_button.draw_button()
 
@@ -85,7 +90,7 @@ def actualizar_pantalla(service_configuraciones, pantalla, estadisticas, nave, a
     pygame.display.flip()
 
 
-def updata_balas(service_configuraciones, pantalla, nave, aliens, balas):
+def updata_balas(service_configuraciones, pantalla, estadisticas, marcador, nave, aliens, balas):
     # actualiza las balas y elimina las antiguas
     balas.update()
     # Eliminar balas que salen de rango
@@ -93,17 +98,31 @@ def updata_balas(service_configuraciones, pantalla, nave, aliens, balas):
         if bala.rect.bottom <= 0:
             balas.remove(bala)
 
-    check_bala_alien_collisions(service_configuraciones, pantalla, nave, aliens, balas)
+    check_bala_alien_collisions(service_configuraciones, pantalla, estadisticas, marcador, nave, aliens, balas)
 
 
-def check_bala_alien_collisions(service_configuraciones, pantalla, nave, aliens, balas):
+def check_bala_alien_collisions(service_configuraciones, pantalla, estadisticas, marcador, nave, aliens, balas):
     """Elimina las balas y los aliensque choquen"""
     collisions = pygame.sprite.groupcollide(balas, aliens, True, True)
+
+    if collisions:
+        for aliens in collisions.values():
+            estadisticas.puntaje += service_configuraciones.puntos_alien * len(aliens)
+            marcador.prep_puntaje()
+        verifica_alto_puntaje(estadisticas, marcador)
 
     if len(aliens) == 0:
         # Si se destruye toda la flota, comienza un nuevo nivel
         balas.empty()
+        service_configuraciones.aumentar_velocidad()
         crear_flota(service_configuraciones, pantalla, nave, aliens)
+
+
+def verifica_alto_puntaje(estadisticas, marcador):
+    """Verifica si existe un puntaje más alto"""
+    if estadisticas.puntaje > estadisticas.alto_puntaje:
+        estadisticas.alto_puntaje = estadisticas.puntaje
+        marcador.prep_alto_puntaje()
 
 
 def fuego_bala(service_configuraciones, pantalla, nave, balas):
@@ -152,6 +171,7 @@ def change_fleet_direction(service_configuraciones, aliens):
     """Desciende toda la flota y cambia la dirección de la flota"""
     for alien in aliens.sprites():
         alien.rect.y += service_configuraciones.fleet_drop_speed
+
     service_configuraciones.fleet_direction *= -1
 
 
